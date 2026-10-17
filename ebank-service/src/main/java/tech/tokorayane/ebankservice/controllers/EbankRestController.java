@@ -1,9 +1,6 @@
 package tech.tokorayane.ebankservice.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.tokorayane.ebankservice.entities.BankAccount;
 import tech.tokorayane.ebankservice.services.EBankService;
 
@@ -12,7 +9,7 @@ import java.util.List;
 @RestController
 public class EbankRestController {
 
-    private EBankService eBankService;
+    private final EBankService eBankService;
 
     public EbankRestController(EBankService eBankService) {
         this.eBankService = eBankService;
@@ -24,7 +21,7 @@ public class EbankRestController {
     }
 
     @GetMapping("/accounts/{id}")
-    public BankAccount getBankAccountById(String id) {
+    public BankAccount getBankAccountById(@PathVariable String id) {
         return this.eBankService.getBankAccountById(id);
     }
 
