@@ -1,7 +1,11 @@
 package tech.tokorayane.ebankservice;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import tech.tokorayane.ebankservice.entities.BankAccount;
+import tech.tokorayane.ebankservice.services.EBankService;
 
 @SpringBootApplication
 public class EbankServiceApplication {
@@ -10,4 +14,18 @@ public class EbankServiceApplication {
         SpringApplication.run(EbankServiceApplication.class, args);
     }
 
+    @Bean
+    CommandLineRunner commandLineRunner(EBankService eBankService) {
+        return (args) -> {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 5; j++) {
+                    eBankService.save(BankAccount.builder()
+                                    .type(Math.random() > 0.5 ? "CURRENT_ACCOUNT" : "SAVING_ACCOUNT")
+                                    .balance(1000 + Math.random() * 60000)
+                                    .customerId(i)
+                            .build());
+                }
+            }
+        };
+    }
 }
