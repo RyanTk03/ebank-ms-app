@@ -18,6 +18,6 @@ public class EbankChatbotController {
 
     @GetMapping("/chat")
     public String chat(@RequestParam(name = "query") String query) {
-        return this.eBankAIAgent.chat(query);
+        return this.eBankAIAgent.chat("0", query);
     }
 }
