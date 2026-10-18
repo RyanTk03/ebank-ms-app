@@ -3,6 +3,7 @@ package tech.tokorayane.ebankbot.agents;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,8 @@ public class EBankAIAgent {
                 .build();
     }
 
-    public String chat(String conversationId, String query) {
-        return this.chatClient.prompt(query)
+    public String chat(String conversationId, Prompt prompt) {
+        return this.chatClient.prompt(prompt)
                 .advisors(advisor -> advisor.param(
                         ChatMemory.CONVERSATION_ID, conversationId
                 ))
