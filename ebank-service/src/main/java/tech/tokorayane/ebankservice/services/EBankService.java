@@ -1,5 +1,7 @@
 package tech.tokorayane.ebankservice.services;
 
+import org.springframework.ai.mcp.annotation.McpTool;
+import org.springframework.ai.mcp.annotation.McpToolParam;
 import org.springframework.stereotype.Service;
 import tech.tokorayane.ebankservice.entities.BankAccount;
 import tech.tokorayane.ebankservice.feign.CustomerRestClient;
@@ -19,18 +21,21 @@ public class EBankService {
         this.customerRestClient = customerRestClient;
     }
 
+    @McpTool(description = "Get all Bank accounts")
     public List<BankAccount> getAllBankAccounts() {
         return this.bankAccountRepository.findAll();
     }
 
-    public BankAccount getBankAccountById(String id) {
+    @McpTool(description = "Get a bank account by id")
+    public BankAccount getBankAccountById(@McpToolParam(description = "The bank account id") String id) {
         BankAccount bankAccount = this.bankAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found!"));
         bankAccount.setCustomer(this.customerRestClient.getCustomerById(bankAccount.getCustomerId()));
 
         return bankAccount;
     }
 
-    public BankAccount save(BankAccount bankAccount) {
+    @McpTool(description = "Save a new bank Account")
+    public BankAccount save(@McpToolParam(description = "The bank account to save (balance, type, customerId)") BankAccount bankAccount) {
         try {
             Customer customer = this.customerRestClient.getCustomerById(bankAccount.getCustomerId());
             bankAccount.setCreatedAt(new Date());
